@@ -1,8 +1,7 @@
 /* SUGESTÃO DA AULA 28/02/18
  * 
- * Aumentar o limite de emprestimos
- * Aumentar o limite de livros por usuário
- * 
+ * OBS: Este codigo tinha inicialmente 257 linhas
+ *
  * SUGESTÃO DA AULA 02/03/18
  * 
  * Eliminar magic numbers (trocar userLibray por x)
@@ -24,18 +23,21 @@ public class Biblioteca {
 		Scanner in = new Scanner(System.in);
 
 		// usuários
-		String[] nomes = new String[3];
-		int[] codigoUsuarios = new int[3];
+		String[] nomes = new String[limiteMaxUsuario];
+		int[] codigoUsuarios = new int[limiteMaxUsuario];
 		int proximoIndiceLivreParaUsuario = 0;
-		boolean[][] livrosEmprestadosPeloUsuario = new boolean[3][9];
-
+		boolean[][] livrosEmprestadosPeloUsuario = new boolean[limiteMaxUsuario][limiteMaxLivros];
+		
+		int []livrosJaEmprestados = new int [limiteMaxUsuario];
+		
 		// livros
-		String[] titulos = new String[9];
-		String[] autores = new String[9];
-		int[] qtdExemplaresDisponiveis = new int[9];
-		int[] qtdExemplaresEmprestados = new int[9];
-		int[] codigoLivros = new int[9];
+		String[] titulos = new String[limiteMaxLivros];
+		String[] autores = new String[limiteMaxLivros];
+		int[] qtdExemplaresDisponiveis = new int[limiteMaxLivros];
+		int[] qtdExemplaresEmprestados = new int[limiteMaxLivros];
+		int[] codigoLivros = new int[limiteMaxLivros];
 		int proximoIndiceLivreParaLivro = 0;
+		int limiteDeEmprestimoDoMesmoExemplar = 1;
 
 		while (true) {
 
@@ -154,8 +156,14 @@ public class Biblioteca {
 				if (qtdExemplaresDisponiveis[indiceLivro] == 0) {
 					System.out.println("Não há nenhum exemplar deste livro disponível.");
 				} else {
+					//colocando limite de emprestimo:
+					if(livrosJaEmprestados[indiceLivro]==limiteDeEmprestimoDoMesmoExemplar){
+						System.out.println("limite de emprestimo atingido");
+						break;
+					}
 					qtdExemplaresDisponiveis[indiceLivro]--;
 					qtdExemplaresEmprestados[indiceLivro]++;
+					livrosJaEmprestados[indiceUsuario]++;
 					livrosEmprestadosPeloUsuario[indiceUsuario][indiceLivro] = true;
 					System.out.println("Empréstimo realizado com sucesso!");
 				}
@@ -203,6 +211,7 @@ public class Biblioteca {
 				// devolve o livro
 				qtdExemplaresDisponiveis[indiceLivro]++;
 				qtdExemplaresEmprestados[indiceLivro]--;
+				livrosJaEmprestados[indiceUsuario]--;
 				livrosEmprestadosPeloUsuario[indiceUsuario][indiceLivro] = false;
 				System.out.println("Devolução realizada com sucesso!");
 

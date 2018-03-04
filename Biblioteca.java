@@ -1,6 +1,24 @@
+/* SUGESTÃO DA AULA 28/02/18
+ * 
+ * Aumentar o limite de emprestimos
+ * Aumentar o limite de livros por usuário
+ * 
+ * SUGESTÃO DA AULA 02/03/18
+ * 
+ * Eliminar magic numbers (trocar userLibray por x)
+ * Validação de campos
+ * Tratar chave primária
+ * 1 exemplar de cada livro por usuário
+ * Melhorar o código (modularizar, criar classes, diminuir qtd de parametros etc)
+ *  
+ * */
+
 import java.util.Scanner;
 
 public class Biblioteca {
+	
+	static final int limiteMaxUsuario = 4;
+	static final int limiteMaxLivros = 2;
 
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);

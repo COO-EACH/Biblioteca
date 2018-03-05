@@ -1,10 +1,11 @@
 /* SUGESTÃO DA AULA 28/02/18
  * 
  * OBS: Este codigo tinha inicialmente 257 linhas
+ * 		Não usar objeto ainda, use statics
  *
  * SUGESTÃO DA AULA 02/03/18
  * 
- * Eliminar magic numbers (trocar userLibray por x)
+ * OK -- Eliminar magic numbers (trocar userLibray por x)
  * Validação de campos
  * Tratar chave primária
  * 1 exemplar de cada livro por usuário
@@ -20,7 +21,7 @@ public class Biblioteca {
 	static final int limiteMaxLivros = 2;
 
 	public static void main(String[] args) {
-		Scanner in = new Scanner(System.in);
+		Scanner entradaDeDados = new Scanner(System.in);
 
 		// usuários
 		String[] nomes = new String[limiteMaxUsuario];
@@ -55,25 +56,31 @@ public class Biblioteca {
 			// ---------------------
 
 			// lê o comando digitado
-			int comando = Integer.parseInt(in.nextLine());
+			int opcao = Integer.parseInt(entradaDeDados.nextLine());
 
-			switch (comando) {
+			switch (opcao) {
 			case 1: // cadastrar um novo usuário
 
-				if (proximoIndiceLivreParaUsuario == 3) {
+				if (proximoIndiceLivreParaUsuario == limiteMaxUsuario-1) {
 					System.out.println("Não cabe mais nenhum usuário!");
 				} else {
 
 					// cadastra o usuário
 					System.out.println("Nome: ");
-					String nome = in.nextLine();
+					String nome = entradaDeDados.nextLine();
+					
+					if(nome.length() <3) {
+						System.out.println("Nome muito curto, digite outro com no minimo 3 caracteres :) ");
+					}
+					
+					
+					
 					System.out.println("Código: ");
-					int codigo = Integer.parseInt(in.nextLine());
+					int codigo = Integer.parseInt(entradaDeDados.nextLine());
 					nomes[proximoIndiceLivreParaUsuario] = nome;
 					codigoUsuarios[proximoIndiceLivreParaUsuario] = codigo;
 					proximoIndiceLivreParaUsuario++;
 					System.out.println("Usuário cadstrado com sucesso!");
-
 				}
 				break;
 
@@ -83,13 +90,13 @@ public class Biblioteca {
 				} else {
 					// --- cadastra o livro ---
 					System.out.println("Título: ");
-					String titulo = in.nextLine();
+					String titulo = entradaDeDados.nextLine();
 					System.out.println("Autor: ");
-					String autor = in.nextLine();
+					String autor = entradaDeDados.nextLine();
 					System.out.println("Quantidade de exemplares: ");
-					int qtdExemplares = Integer.parseInt(in.nextLine());
+					int qtdExemplares = Integer.parseInt(entradaDeDados.nextLine());
 					System.out.println("Código: ");
-					int codigo = Integer.parseInt(in.nextLine());
+					int codigo = Integer.parseInt(entradaDeDados.nextLine());
 
 					if (codigo < 0) {
 						System.out
@@ -115,7 +122,7 @@ public class Biblioteca {
 
 				// ----- busca o usuário -----
 				System.out.println("Código usuário: ");
-				int codigoUsuario = Integer.parseInt(in.nextLine());
+				int codigoUsuario = Integer.parseInt(entradaDeDados.nextLine());
 				boolean encontrouUsuario = false;
 				int indiceUsuario;
 
@@ -135,7 +142,7 @@ public class Biblioteca {
 
 				// ----- busca o livro -----
 				System.out.println("Código livro: ");
-				int codigoLivro = Integer.parseInt(in.nextLine());
+				int codigoLivro = Integer.parseInt(entradaDeDados.nextLine());
 				int indiceLivro;
 				boolean encontrouLivro = false;
 
@@ -173,7 +180,7 @@ public class Biblioteca {
 
 				// ----- busca o usuário -----
 				System.out.println("Código usuário: ");
-				codigoUsuario = Integer.parseInt(in.nextLine());
+				codigoUsuario = Integer.parseInt(entradaDeDados.nextLine());
 				encontrouUsuario = false;
 
 				for (indiceUsuario = 0; indiceUsuario < proximoIndiceLivreParaUsuario; indiceUsuario++) {
@@ -192,7 +199,7 @@ public class Biblioteca {
 
 				// ----- busca o livro -----
 				System.out.println("Código livro: ");
-				codigoLivro = Integer.parseInt(in.nextLine());
+				codigoLivro = Integer.parseInt(entradaDeDados.nextLine());
 				encontrouLivro = false;
 
 				for (indiceLivro = 0; indiceLivro < proximoIndiceLivreParaLivro; indiceLivro++) {
@@ -270,8 +277,8 @@ public class Biblioteca {
 			case 8: // encerrar
 
 				System.out.println("Obrigado por utilizar nosso sistema :)");
-				System.out.println("Tchau!");
-				in.close();
+				System.out.println("Até que enfim!");
+				entradaDeDados.close();
 				System.exit(0);
 				break;
 

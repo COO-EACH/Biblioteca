@@ -13,22 +13,22 @@
  *  
  * */
 
-import java.util.Scanner;
+import java.io.*;
 
 public class Biblioteca {
 	
+	//constructor:
 	static final int limiteMaxUsuario = 4;
 	static final int limiteMaxLivros = 2;
+	static final String[] nomes = new String[limiteMaxUsuario];
+	static final int[] codigoUsuarios = new int[limiteMaxUsuario];
+	static final int proximoIndiceLivreParaUsuario = 0;
+	
 
 	public static void main(String[] args) {
 		Scanner entradaDeDados = new Scanner(System.in);
-
-		// usuários
-		String[] nomes = new String[limiteMaxUsuario];
-		int[] codigoUsuarios = new int[limiteMaxUsuario];
-		int proximoIndiceLivreParaUsuario = 0;
-		boolean[][] livrosEmprestadosPeloUsuario = new boolean[limiteMaxUsuario][limiteMaxLivros];
 		
+		boolean[][] livrosEmprestadosPeloUsuario = new boolean[limiteMaxUsuario][limiteMaxLivros];
 		int []livrosJaEmprestados = new int [limiteMaxUsuario];
 		
 		// livros
@@ -50,8 +50,7 @@ public class Biblioteca {
 			System.out.println("4 - Para realizar uma devolução");
 			System.out.println("5 - Para listar os usuários cadastrados");
 			System.out.println("6 - Para listar os livros cadastrados");
-			System.out
-					.println("7 - Para listar os livros emprestados por um usuário");
+			System.out.println("7 - Para listar os livros emprestados por um usuário");
 			System.out.println("8 - Para encerrar");
 			// ---------------------
 
@@ -64,7 +63,6 @@ public class Biblioteca {
 				if (proximoIndiceLivreParaUsuario == limiteMaxUsuario-1) {
 					System.out.println("Não cabe mais nenhum usuário!");
 				} else {
-
 					// cadastra o usuário
 					System.out.println("Nome: ");
 					String nome = entradaDeDados.nextLine();
@@ -72,8 +70,6 @@ public class Biblioteca {
 					if(nome.length() <3) {
 						System.out.println("Nome muito curto, digite outro com no minimo 3 caracteres :) ");
 					}
-					
-					
 					
 					System.out.println("Código: ");
 					int codigo = Integer.parseInt(entradaDeDados.nextLine());
@@ -288,5 +284,38 @@ public class Biblioteca {
 			}
 		}
 	}
+	public static void cadastrarUsuario(String nome, int codigo ) {
+			nomes[proximoIndiceLivreParaUsuario] = nome;
+			codigoUsuarios[proximoIndiceLivreParaUsuario] = codigo;
+			proximoIndiceLivreParaUsuario++;
+			
+			System.out.println("Usuário cadstrado com sucesso!");
+	}
+	public static void cadastrarLivro() {
+		
+	}
+	public static void emprestarLivro() {
+		
+	}
+	public static void devolverLivro() {
+		
+	}
+	public static void listarUsuarios() {
+		
+	}
+	public static void listarLivros() {
+		
+	}
+	public static void listarEmprestimos() {
+		
+	}
 
+}
+
+public class Usuario {
+	
+}
+
+public class Livro {
+	
 }

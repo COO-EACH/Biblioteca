@@ -21,14 +21,16 @@ public class Biblioteca {
 	//constructor:
 	static final int maxUser = 4;
 	static final int maxBook = 2;
-	static final String[] nomes = new String[maxUser];
+	static final Usuario[] nomes = new Usuario[maxUser];
+	static int userPos = 0;
 	
 	static final int[] codUser = new int[maxUser];
+	private static Scanner entradaDeDados;
 	
-	static final int nextUser = 0;
+	
 	
 	public static void main(String[] args) {
-		Scanner entradaDeDados = new Scanner(System.in);
+		entradaDeDados = new Scanner(System.in);
 		
 		boolean[][] livrosEmprestadosPeloUsuario = new boolean[maxUser][maxBook];
 		int []livrosJaEmprestados = new int [maxUser];
@@ -60,24 +62,8 @@ public class Biblioteca {
 			int opcao = Integer.parseInt(entradaDeDados.nextLine());
 
 			switch (opcao) {
-			case 1: // cadastrar um novo usuário
-
-				if (nextUser == maxUser-1) {
-					System.out.println("Não cabe mais nenhum usuário!");
-				} else {
-					// cadastra o usuário
-					System.out.println("Nome: ");
-					String nome = entradaDeDados.nextLine();
-					
-					if(nome.length() <3) {
-						System.out.println("Nome muito curto, digite outro com no minimo 3 caracteres :) ");
-					}
-					
-					System.out.println("Código: ");
-					int codigo = Integer.parseInt(entradaDeDados.nextLine());
-					
-					cadastrarUsuario(nome, codigo);
-				}
+			case 1:	cadastrarUsuario();
+				//break aki pq ele n quer que continue verificando os outros casos		
 				break;
 
 			case 2: // cadastrar um novo livro
@@ -122,7 +108,7 @@ public class Biblioteca {
 				boolean encontrouUsuario = false;
 				int indiceUsuario;
 
-				for (indiceUsuario = 0; indiceUsuario < nextUser; indiceUsuario++) {
+				for (indiceUsuario = 0; indiceUsuario < userPos; indiceUsuario++) {
 					if (codUser[indiceUsuario] == codigoUsuario) {
 						encontrouUsuario = true;
 						break;
@@ -179,7 +165,7 @@ public class Biblioteca {
 				codigoUsuario = Integer.parseInt(entradaDeDados.nextLine());
 				encontrouUsuario = false;
 
-				for (indiceUsuario = 0; indiceUsuario < nextUser; indiceUsuario++) {
+				for (indiceUsuario = 0; indiceUsuario < userPos; indiceUsuario++) {
 					if (codUser[indiceUsuario] == codigoUsuario) {
 						encontrouUsuario = true;
 						break;
@@ -221,7 +207,7 @@ public class Biblioteca {
 				break;
 
 			case 5: // listar os usuários cadastrados
-				for (int i = 0; i < nextUser; i++) {
+				for (int i = 0; i < userPos; i++) {
 					System.out.println("Nome: " + nomes[i]);
 					System.out.println("Código: " + codUser[i]);
 					System.out.println();
@@ -245,7 +231,7 @@ public class Biblioteca {
 			case 7: // listar os livros emprestados por um usuário
 
 				// para cada usuário
-				for (int i = 0; i < nextUser; i++) {
+				for (int i = 0; i < userPos; i++) {
 					System.out
 							.println("-----------------------------------------");
 					System.out.println("Nome: " + nomes[i]);
@@ -284,12 +270,20 @@ public class Biblioteca {
 			}
 		}
 	}
-	public static void cadastrarUsuario(String nome, int codigo ) {
-			nomes[nextUser] = nome;
-			codUser[nextUser] = codigo;
-			nextUser++;
-			
-			System.out.println("Usuário cadstrado com sucesso!");
+	public static void cadastrarUsuario() {
+		entradaDeDados = new Scanner(System.in);
+		
+		System.out.println("Nome: ");
+		String nome = entradaDeDados.nextLine();
+		System.out.println("Código: ");
+		int codigo = Integer.parseInt(entradaDeDados.nextLine());
+
+		//validar os campos acima
+		
+		Usuario user = new Usuario(nome, codigo);
+		nomes[userPos] = user;
+		userPos++;
+		System.out.println("Usuário cadstrado com sucesso!");
 	}
 	public static void cadastrarLivro() {
 		
@@ -309,12 +303,12 @@ public class Biblioteca {
 	public static void listarEmprestimos() {
 		
 	}
-
 }
 
-public class Usuario {
-	private String nome;
-	private int codigo;
+class Usuario {
+	public static String nome;
+	public static int codigo;
+	
 	public int codLivros[];
 	
 	//constructor
@@ -322,10 +316,11 @@ public class Usuario {
 		if(nome.length()<2) {
 			System.out.println("Nome muito curto!");
 		}
-		this(nome, codigo);
+		Usuario.nome = nome;
+		Usuario.codigo = codigo;
 	}
 }
 
-public class Livro {
+class Livro {
 	
 }

@@ -1,326 +1,361 @@
-/* SUGESTÃO DA AULA 28/02/18
- * 
- * OBS: Este codigo tinha inicialmente 257 linhas
- * 		Não usar objeto ainda, use statics
- *
- * SUGESTÃO DA AULA 02/03/18
- * 
- * OK -- Eliminar magic numbers (trocar userLibray por x)
- * Validação de campos
- * Tratar chave primária
- * 1 exemplar de cada livro por usuário
- * Melhorar o código (modularizar, criar classes, diminuir qtd de parametros etc)
- *  
- * */
-
-import java.io.*;
 import java.util.Scanner;
 
-public class Biblioteca {
+public class ModularizadoProcedural {
 
-	//constructor:
-	static final int maxUser = 4;
-	static final int maxBook = 2;
-	static final Usuario[] nomes = new Usuario[maxUser];
-	static int userPos = 0;
-	
-	static final int[] codUser = new int[maxUser];
-	private static Scanner entradaDeDados;
-	
-	
-	
+	// ---- constantes para eliminar os "magic numbers" ----
+	static final int MAX_USUARIOS = 3;
+	static final int MAX_LIVROS = 9;
+
+	// -----------------------------------------------------
+
+	// ---- utilizando classe apenas como se fosse uma "struct" do C ----
+	static class Usuario {
+		String nome;
+		int codigo;
+		boolean[] livrosEmprestados = new boolean[MAX_LIVROS];
+	}
+
+	static class Livro {
+		String titulo;
+		String autores;
+		int qtdExemplaresDisponiveis;
+		int qtdExemplaresEmprestados;
+		int codigo;
+	}
+
+	// -------------------------------------------------------------------
+
+	// ---- variáveis globais para evitar métodos com muitos parâmetros ----
+	static Usuario[] usuarios = new Usuario[MAX_USUARIOS];
+	static Livro[] livros = new Livro[MAX_LIVROS];
+	static Scanner in = new Scanner(System.in);
+	static int proximoIndiceLivreParaUsuario = 0;
+	static int proximoIndiceLivreParaLivro = 0;
+
+	// ---------------------------------------------------------------------
+
+	/*
+	 * o método main apenas lê os comandos digitados no prompt e chama o método
+	 * responsável por tratar a requisição
+	 */
 	public static void main(String[] args) {
-		entradaDeDados = new Scanner(System.in);
-		
-		boolean[][] livrosEmprestadosPeloUsuario = new boolean[maxUser][maxBook];
-		int []livrosJaEmprestados = new int [maxUser];
-		
-		// livros
-		String[] titulos = new String[maxBook];
-		String[] autores = new String[maxBook];
-		int[] qtdExemplaresDisponiveis = new int[maxBook];
-		int[] qtdExemplaresEmprestados = new int[maxBook];
-		int[] codigoLivros = new int[maxBook];
-		int proximoIndiceLivreParaLivro = 0;
-		int limiteDeEmprestimoDoMesmoExemplar = 1;
-
 		while (true) {
-
-			// --- imprime menu ---
-			System.out.println("Digite uma das opções abaixo:");
-			System.out.println("1 - Para cadastrar um novo usuário");
-			System.out.println("2 - Para cadastrar um novo livro");
-			System.out.println("3 - Para realizar um empréstimo");
-			System.out.println("4 - Para realizar uma devolução");
-			System.out.println("5 - Para listar os usuários cadastrados");
-			System.out.println("6 - Para listar os livros cadastrados");
-			System.out.println("7 - Para listar os livros emprestados por um usuário");
-			System.out.println("8 - Para encerrar");
-			// ---------------------
+			mostraMenu();
 
 			// lê o comando digitado
-			int opcao = Integer.parseInt(entradaDeDados.nextLine());
+			int comando = Integer.parseInt(in.nextLine());
 
-			switch (opcao) {
-			case 1:	cadastrarUsuario();
-				//break aki pq ele n quer que continue verificando os outros casos		
+			// ---- trata cada comando em um método separado -----
+			switch (comando) {
+			case 1:
+				cadastraUsuario();
 				break;
 
-			case 2: // cadastrar um novo livro
-				if (proximoIndiceLivreParaLivro == 9) {
-					System.out.println("Não cabe mais nenhum livro!");
-				} else {
-					// --- cadastra o livro ---
-					System.out.println("Título: ");
-					String titulo = entradaDeDados.nextLine();
-					System.out.println("Autor: ");
-					String autor = entradaDeDados.nextLine();
-					System.out.println("Quantidade de exemplares: ");
-					int qtdExemplares = Integer.parseInt(entradaDeDados.nextLine());
-					System.out.println("Código: ");
-					int codigo = Integer.parseInt(entradaDeDados.nextLine());
-
-					if (codigo < 0) {
-						System.out
-								.println("O código deve ser um inteiro não-negativo.");
-						continue;
-					}
-
-					titulos[proximoIndiceLivreParaLivro] = titulo;
-					codigoLivros[proximoIndiceLivreParaLivro] = codigo;
-					autores[proximoIndiceLivreParaLivro] = autor;
-					qtdExemplaresDisponiveis[proximoIndiceLivreParaLivro] = qtdExemplares;
-
-					// não precisa...
-					qtdExemplaresEmprestados[proximoIndiceLivreParaLivro] = 0;
-
-					proximoIndiceLivreParaLivro++;
-					System.out.println("Livro cadstrado com sucesso!");
-					// -------------------------
-				}
+			case 2:
+				cadastraLivro();
 				break;
 
-			case 3: // realizar um empréstimo
-
-				// ----- busca o usuário -----
-				System.out.println("Código usuário: ");
-				int codigoUsuario = Integer.parseInt(entradaDeDados.nextLine());
-				boolean encontrouUsuario = false;
-				int indiceUsuario;
-
-				for (indiceUsuario = 0; indiceUsuario < userPos; indiceUsuario++) {
-					if (codUser[indiceUsuario] == codigoUsuario) {
-						encontrouUsuario = true;
-						break;
-					}
-				}
-
-				if (!encontrouUsuario) {
-					System.out.println("Usuário não encontrado.");
-					continue;
-				}
-
-				// ----------------------------
-
-				// ----- busca o livro -----
-				System.out.println("Código livro: ");
-				int codigoLivro = Integer.parseInt(entradaDeDados.nextLine());
-				int indiceLivro;
-				boolean encontrouLivro = false;
-
-				for (indiceLivro = 0; indiceLivro < proximoIndiceLivreParaLivro; indiceLivro++) {
-					if (codigoLivros[indiceLivro] == codigoLivro) {
-						encontrouLivro = true;
-						break;
-					}
-				}
-
-				if (!encontrouLivro) {
-					System.out.println("Livro não encontrado.");
-					continue;
-				}
-				// ----------------------------
-
-				// empresta o livro
-				if (qtdExemplaresDisponiveis[indiceLivro] == 0) {
-					System.out.println("Não há nenhum exemplar deste livro disponível.");
-				} else {
-					//colocando limite de emprestimo:
-					if(livrosJaEmprestados[indiceLivro]==limiteDeEmprestimoDoMesmoExemplar){
-						System.out.println("limite de emprestimo atingido");
-						break;
-					}
-					qtdExemplaresDisponiveis[indiceLivro]--;
-					qtdExemplaresEmprestados[indiceLivro]++;
-					livrosJaEmprestados[indiceUsuario]++;
-					livrosEmprestadosPeloUsuario[indiceUsuario][indiceLivro] = true;
-					System.out.println("Empréstimo realizado com sucesso!");
-				}
+			case 3:
+				realizaEmprestimo();
 				break;
 
-			case 4: // realizar uma devolução
-
-				// ----- busca o usuário -----
-				System.out.println("Código usuário: ");
-				codigoUsuario = Integer.parseInt(entradaDeDados.nextLine());
-				encontrouUsuario = false;
-
-				for (indiceUsuario = 0; indiceUsuario < userPos; indiceUsuario++) {
-					if (codUser[indiceUsuario] == codigoUsuario) {
-						encontrouUsuario = true;
-						break;
-					}
-				}
-
-				if (!encontrouUsuario) {
-					System.out.println("Usuário não encontrado.");
-					continue;
-				}
-
-				// ----------------------------
-
-				// ----- busca o livro -----
-				System.out.println("Código livro: ");
-				codigoLivro = Integer.parseInt(entradaDeDados.nextLine());
-				encontrouLivro = false;
-
-				for (indiceLivro = 0; indiceLivro < proximoIndiceLivreParaLivro; indiceLivro++) {
-					if (codigoLivros[indiceLivro] == codigoLivro) {
-						encontrouLivro = true;
-						break;
-					}
-				}
-
-				if (!encontrouLivro) {
-					System.out.println("Livro não encontrado.");
-					continue;
-				}
-				// ----------------------------
-
-				// devolve o livro
-				qtdExemplaresDisponiveis[indiceLivro]++;
-				qtdExemplaresEmprestados[indiceLivro]--;
-				livrosJaEmprestados[indiceUsuario]--;
-				livrosEmprestadosPeloUsuario[indiceUsuario][indiceLivro] = false;
-				System.out.println("Devolução realizada com sucesso!");
-
+			case 4:
+				realizaDevolucao();
 				break;
 
-			case 5: // listar os usuários cadastrados
-				for (int i = 0; i < userPos; i++) {
-					System.out.println("Nome: " + nomes[i]);
-					System.out.println("Código: " + codUser[i]);
-					System.out.println();
-				}
+			case 5:
+				listaUsuarios();
 				break;
 
-			case 6: // listar os livros cadastrados
-				for (int i = 0; i < proximoIndiceLivreParaLivro; i++) {
-					System.out.println("Título: " + titulos[i]);
-					System.out.println("Autor: " + autores[i]);
-					System.out.println("Exemplares disponíveis: "
-							+ qtdExemplaresDisponiveis[i]);
-					System.out.println("Exemplares emprestados: "
-							+ qtdExemplaresEmprestados[i]);
-					System.out.println("Código: " + codigoLivros[i]);
-					System.out.println();
-				}
-
+			case 6:
+				listaLivros();
 				break;
 
-			case 7: // listar os livros emprestados por um usuário
-
-				// para cada usuário
-				for (int i = 0; i < userPos; i++) {
-					System.out
-							.println("-----------------------------------------");
-					System.out.println("Nome: " + nomes[i]);
-					System.out.println("Código: " + codUser[i]);
-					System.out.println();
-
-					// para cada livro
-					for (int j = 0; j < proximoIndiceLivreParaLivro; j++) {
-
-						// se o usuário está com este livro emprestado então
-						// imprima os dados do livro
-						if (livrosEmprestadosPeloUsuario[i][j]) {
-							System.out.println("Título: " + titulos[j]);
-							System.out.println("Autor: " + autores[j]);
-							System.out.println("Código: " + codigoLivros[j]);
-							System.out.println();
-						}
-					}
-					System.out
-							.println("-----------------------------------------");
-				}
-
+			case 7:
+				listaLivrosEmprestadosPorCadaUsuario();
 				break;
 
-			case 8: // encerrar
-
-				System.out.println("Obrigado por utilizar nosso sistema :)");
-				System.out.println("Até que enfim!");
-				entradaDeDados.close();
-				System.exit(0);
+			case 8:
+				encerra();
 				break;
+			// -------------------------------------------------
 
 			default:
-				System.out.println("Opção Inválida!");
+				mostraMensagem("Opção Inválida!");
 				break;
 			}
 		}
 	}
-	public static void cadastrarUsuario() {
-		entradaDeDados = new Scanner(System.in);
-		
-		System.out.println("Nome: ");
-		String nome = entradaDeDados.nextLine();
-		System.out.println("Código: ");
-		int codigo = Integer.parseInt(entradaDeDados.nextLine());
 
-		//validar os campos acima
-		
-		Usuario user = new Usuario(nome, codigo);
-		nomes[userPos] = user;
-		userPos++;
-		System.out.println("Usuário cadstrado com sucesso!");
-	}
-	public static void cadastrarLivro() {
-		
-	}
-	public static void emprestarLivro() {
-		
-	}
-	public static void devolverLivro() {
-		
-	}
-	public static void listarUsuarios() {
-		
-	}
-	public static void listarLivros() {
-		
-	}
-	public static void listarEmprestimos() {
-		
-	}
-}
 
-class Usuario {
-	public static String nome;
-	public static int codigo;
-	
-	public int codLivros[];
-	
-	//constructor
-	public Usuario(String nome, int codigo){
-		if(nome.length()<2) {
-			System.out.println("Nome muito curto!");
+	// ---- métodos que tratam os comandos digitados ----
+	static void cadastraLivro() {
+		String titulo = leTitulo();
+		String autores = leAutores();
+		int qtdExemplares = leQtdExemplares();
+		int codigo = leCodigoLivro();
+
+		cadastraLivro(titulo, autores, codigo, qtdExemplares);
+		mostraMensagem("Livro cadstrado com sucesso!");
+	}
+
+	static void cadastraUsuario() {
+		String nome = leNome();
+		int codigo = leCodigoUsuario();
+		cadastraUsuario(nome, codigo);
+	}
+
+	static void realizaDevolucao() {
+		int codigoUsuario = leCodigoUsuario();
+		Usuario usuario = buscaUsuario(codigoUsuario);
+
+		if (usuario == null) {
+			mostraMensagem("Usuário não encontrado.");
+		} else {
+			int codigoLivro = leCodigoLivro();
+			Livro livro = buscaLivro(codigoLivro);
+
+			if (livro == null) {
+				mostraMensagem("Livro não encontrado.");
+			} else {
+				devolveLivro(usuario, livro);
+			}
 		}
-		Usuario.nome = nome;
-		Usuario.codigo = codigo;
 	}
-}
 
-class Livro {
+	static void realizaEmprestimo() {
+		int codigoUsuario = leCodigoUsuario();
+		Usuario usuario = buscaUsuario(codigoUsuario);
+
+		if (usuario == null) {
+			mostraMensagem("Usuário não encontrado.");
+		} else {
+			int codigoLivro = leCodigoLivro();
+			Livro livro = buscaLivro(codigoLivro);
+
+			if (livro == null) {
+				mostraMensagem("Livro não encontrado.");
+			}
+
+			emprestaLivro(usuario, livro);
+		}
+	}
+
+	static void encerra() {
+		mostraMensagem("Obrigado por utilizar nosso sistema :)");
+		mostraMensagem("Tchau!");
+		in.close();
+		System.exit(0);
+	}
+
+	static void listaUsuarios() {
+		for (int i = 0; i < proximoIndiceLivreParaUsuario; i++) {
+			Usuario usuario = usuarios[i];
+			mostraUsuario(usuario);
+		}
+	}
+
+	static void listaLivros() {
+		for (int i = 0; i < proximoIndiceLivreParaLivro; i++) {
+			Livro livro = livros[i];
+			mostraLivro(livro);
+		}
+	}
+
+	static void listaLivrosEmprestadosPorCadaUsuario() {
+		// para cada usuário
+		for (int i = 0; i < proximoIndiceLivreParaUsuario; i++) {
+			Usuario usuario = usuarios[i];
+			mostraMensagem("-----------------------------------------");
+			mostraUsuario(usuario);
+			listaLivrosEmprestados(usuario);
+			mostraMensagem("-----------------------------------------");
+		}
+	}
+
+	static void listaLivrosEmprestados(Usuario usuario) {
+		// para cada livro
+		for (int j = 0; j < proximoIndiceLivreParaLivro; j++) {
+
+			// se o usuário está com este livro emprestado então
+			// imprima os dados do livro
+			if (usuario.livrosEmprestados[j]) {
+				Livro livro = livros[j];
+				mostraLivro(livro);
+			}
+		}
+	}
+
+	// -------------------------------------
+
+	// ---- métodos que tratam da leitura e escrita de dados no prompt ----
+
+	static void mostraMensagem(String mensagem) {
+		System.out.println(mensagem);
+	}
+
+	static void mostraMenu() {
+		mostraMensagem("Digite uma das opções abaixo:");
+		mostraMensagem("1 - Para cadastrar um novo usuário");
+		mostraMensagem("2 - Para cadastrar um novo livro");
+		mostraMensagem("3 - Para realizar um empréstimo");
+		mostraMensagem("4 - Para realizar uma devolução");
+		mostraMensagem("5 - Para listar os usuários cadastrados");
+		mostraMensagem("6 - Para listar os livros cadastrados");
+		System.out
+				.println("7 - Para listar os livros emprestados por um usuário");
+		mostraMensagem("8 - Para encerrar");
+	}
+
+	static void mostraLivro(Livro livro) {
+		mostraMensagem("Título: " + livro.titulo);
+		mostraMensagem("Autor(es): " + livro.autores);
+		mostraMensagem("Exemplares disponíveis: "
+				+ livro.qtdExemplaresDisponiveis);
+		mostraMensagem("Exemplares emprestados: "
+				+ livro.qtdExemplaresEmprestados);
+		mostraMensagem("Código: " + livro.codigo);
+	}
+
+	static void mostraUsuario(Usuario usuario) {
+		mostraMensagem("Nome: " + usuario.nome);
+		mostraMensagem("Código: " + usuario.codigo);
+	}
+
+	static String leNome() {
+		mostraMensagem("Nome: ");
+		String nome = in.nextLine();
+		return nome;
+	}
+
+	static int leCodigoLivro() {
+		mostraMensagem("Código livro: ");
+		int codigoLivro = Integer.parseInt(in.nextLine());
+		return codigoLivro;
+	}
+
+	static int leCodigoUsuario() {
+		mostraMensagem("Código usuário: ");
+		int codigoUsuario = Integer.parseInt(in.nextLine());
+		return codigoUsuario;
+	}
+
+	static int leQtdExemplares() {
+		mostraMensagem("Quantidade de exemplares: ");
+		int qtdExemplares = Integer.parseInt(in.nextLine());
+		return qtdExemplares;
+	}
+
+	static String leAutores() {
+		mostraMensagem("Autores: ");
+		String autores = in.nextLine();
+		return autores;
+	}
+
+	static String leTitulo() {
+		mostraMensagem("Título: ");
+		String titulo = in.nextLine();
+		return titulo;
+	}
+
+	// ------------------------------------------------------------------
+
+	// ---- métodos que tratam regra de negócio ----
+	static void devolveLivro(Usuario usuario, Livro livro) {
+		livro.qtdExemplaresDisponiveis++;
+		livro.qtdExemplaresEmprestados--;
+		int indiceLivro = obtemIndiceLivro(livro);
+		usuario.livrosEmprestados[indiceLivro] = false;
+		mostraMensagem("Devolução realizada com sucesso!");
+	}
+
+	static void emprestaLivro(Usuario usuario, Livro livro) {
+		if (livro.qtdExemplaresDisponiveis == 0) {
+			mostraMensagem("Não há nenhum exemplar deste livro disponível.");
+		} else {
+			livro.qtdExemplaresDisponiveis--;
+			livro.qtdExemplaresEmprestados++;
+			int indiceLivro = obtemIndiceLivro(livro);
+			usuario.livrosEmprestados[indiceLivro] = true;
+			mostraMensagem("Empréstimo realizado com sucesso!");
+		}
+	}
+
+	// ---------------------------------------------
+
+	// ---- métodos que lidam com a "base de dados" ----
+	static void cadastraUsuario(String nome, int codigo) {
+		if (proximoIndiceLivreParaUsuario == 3) {
+			mostraMensagem("Não cabe mais nenhum usuário!");
+		} else {
+			Usuario usuario = new Usuario();
+			usuario.nome = nome;
+			usuario.codigo = codigo;
+			usuarios[proximoIndiceLivreParaUsuario++] = usuario;
+			mostraMensagem("Usuário cadstrado com sucesso!");
+		}
+	}
+
+	static void cadastraLivro(String titulo, String autores, int codigo,
+			int qtdExemplares) {
+		if (proximoIndiceLivreParaLivro == MAX_LIVROS) {
+			mostraMensagem("Não cabe mais nenhum livro!");
+		} else {
+			Livro livro = new Livro();
+			livros[proximoIndiceLivreParaLivro++] = livro;
+		}
+	}
+
+	static Livro buscaLivro(int codigoLivro) {
+		int indiceLivro;
+		boolean encontrouLivro = false;
+
+		for (indiceLivro = 0; indiceLivro < proximoIndiceLivreParaLivro; indiceLivro++) {
+			if (livros[indiceLivro].codigo == codigoLivro) {
+				encontrouLivro = true;
+				break;
+			}
+		}
+
+		if (!encontrouLivro) {
+			return null;
+		}
+
+		return livros[indiceLivro];
+	}
+
+	static Usuario buscaUsuario(int codigoUsuario) {
+		boolean encontrouUsuario = false;
+		int indiceUsuario;
+
+		for (indiceUsuario = 0; indiceUsuario < proximoIndiceLivreParaUsuario; indiceUsuario++) {
+			if (usuarios[indiceUsuario].codigo == codigoUsuario) {
+				encontrouUsuario = true;
+				break;
+			}
+		}
+
+		if (!encontrouUsuario) {
+			return null;
+		}
+
+		return usuarios[indiceUsuario];
+	}
+
+	// --------------------------------------------------
 	
+	// ---- métodos auxiliares (gambiarras) ----
+	static int obtemIndiceLivro(Livro livro) {
+		int indiceLivro;
+
+		for (indiceLivro = 0; indiceLivro < proximoIndiceLivreParaLivro; indiceLivro++) {
+			if (livros[indiceLivro].codigo == livro.codigo) {
+				break;
+			}
+		}
+
+		return indiceLivro;
+	}
+
+	// -----------------------------------------
 }

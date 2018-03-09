@@ -1,4 +1,4 @@
-class Livro {
+public class Livro {
 	String titulo;
 	String autores;
 	int qtdExemplaresDisponiveis;

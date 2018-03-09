@@ -3,10 +3,10 @@
 
 import java.util.Scanner;
 
-class InterfacePrompt {
+public class InterfacePrompt {
 	static Scanner in = new Scanner(System.in);
 
-	static void mostraTela() {
+	public static void mostraTela() {
 		while (true) {
 			mostraMenu();
 
@@ -55,22 +55,22 @@ class InterfacePrompt {
 		}
 	}
 
-	static void mostraMensagem(String mensagem) {
+	public static void mostraMensagem(String mensagem) {
 		System.out.println(mensagem);
 	}
 
-	static int leComando() {
+	public static int leComando() {
 		return Integer.parseInt(in.nextLine());
 	}
 
-	static void encerra() {
+	public static void encerra() {
 		mostraMensagem("Obrigado por utilizar nosso sistema :)");
 		mostraMensagem("Tchau!");
 		in.close();
 		System.exit(0);
 	}
 
-	static void mostraMenu() {
+	public static void mostraMenu() {
 		mostraMensagem("Digite uma das opções abaixo:");
 		mostraMensagem("1 - Para cadastrar um novo usuário");
 		mostraMensagem("2 - Para cadastrar um novo livro");
@@ -83,7 +83,7 @@ class InterfacePrompt {
 		mostraMensagem("8 - Para encerrar");
 	}
 
-	static void mostraLivro(Livro livro) {
+	public static void mostraLivro(Livro livro) {
 		mostraMensagem("Título: " + livro.titulo);
 		mostraMensagem("Autor(es): " + livro.autores);
 		mostraMensagem("Exemplares disponíveis: "
@@ -93,48 +93,48 @@ class InterfacePrompt {
 		mostraMensagem("Código: " + livro.codigo);
 	}
 
-	static void mostraUsuario(Usuario usuario) {
+	public static void mostraUsuario(Usuario usuario) {
 		mostraMensagem("Nome: " + usuario.nome);
 		mostraMensagem("Código: " + usuario.codigo);
 	}
 
-	static String leCampoString(String nomeCampo) {
+	public static String leCampoString(String nomeCampo) {
 		mostraMensagem(nomeCampo + ": ");
 		String textoDigitado = in.nextLine();
 		return textoDigitado;
 	}
 
-	static int leCampoInt(String nomeCampo) {
+	public static int leCampoInt(String nomeCampo) {
 		mostraMensagem(nomeCampo + ": ");
 		String textoDigitado = in.nextLine();
 		return Integer.parseInt(textoDigitado);
 	}
 
-	static String leNome() {
+	public static String leNome() {
 		return leCampoString("Nome");
 	}
 
-	static int leCodigoLivro() {
+	public static int leCodigoLivro() {
 		return leCampoInt("Código livro");
 	}
 
-	static int leCodigoUsuario() {
+	public static int leCodigoUsuario() {
 		return leCampoInt("Código usuário");
 	}
 
-	static int leQtdExemplares() {
+	public static int leQtdExemplares() {
 		return leCampoInt("Quantidade de exemplares");
 	}
 
-	static String leAutores() {
+	public static String leAutores() {
 		return leCampoString("Autores");
 	}
 
-	static String leTitulo() {
+	public static String leTitulo() {
 		return leCampoString("Título");
 	}
 
-	static Livro leLivro() {
+	public static Livro leLivro() {
 		Livro livro = new Livro();
 		livro.titulo = leTitulo();
 		livro.autores = leAutores();
@@ -143,14 +143,14 @@ class InterfacePrompt {
 		return livro;
 	}
 
-	static Usuario leUsuario() {
+	public static Usuario leUsuario() {
 		Usuario usuario = new Usuario();
 		usuario.nome = leNome();
 		usuario.codigo = leCodigoUsuario();
 		return usuario;
 	}
 
-	static void cadastraLivro() {
+	public static void cadastraLivro() {
 		//leLivro - le dados do livro
 		Livro livro = leLivro();
 		if (RegrasNegocio.cadastraLivro(livro)) {
@@ -160,7 +160,7 @@ class InterfacePrompt {
 		}
 	}
 
-	static void cadastraUsuario() {
+	public static void cadastraUsuario() {
 		Usuario usuario = leUsuario();
 		if (RegrasNegocio.cadastraUsuario(usuario)) {
 			mostraMensagem("Usuário cadastrado com sucesso!");
@@ -169,7 +169,7 @@ class InterfacePrompt {
 		}
 	}
 
-	static void realizaDevolucao() {
+	public static void realizaDevolucao() {
 		int codigoUsuario = leCodigoUsuario();
 		int codigoLivro = leCodigoLivro();
 
@@ -180,7 +180,7 @@ class InterfacePrompt {
 		}
 	}
 
-	static void realizaEmprestimo() {
+	public static void realizaEmprestimo() {
 		int codigoUsuario = leCodigoUsuario();
 		int codigoLivro = leCodigoLivro();
 
@@ -191,7 +191,7 @@ class InterfacePrompt {
 		}
 	}
 
-	static void listaUsuarios() {
+	public static void listaUsuarios() {
 		System.out.println("-------------------------------");
 		System.out.println("     Usuários Cadastrados     ");
 		System.out.print("-------------------------------");
@@ -206,7 +206,7 @@ class InterfacePrompt {
 		System.out.println();
 	}
 
-	static void listaLivros() {
+	public static void listaLivros() {
 		System.out.println("-------------------------------");
 		System.out.println("      Livros Cadastrados       ");
 		System.out.print("-------------------------------");
@@ -220,7 +220,7 @@ class InterfacePrompt {
 		System.out.println();
 	}
 
-	static void listaLivrosEmprestadosPorCadaUsuario() {
+	public static void listaLivrosEmprestadosPorCadaUsuario() {
 		System.out.println("------------------------------------------");
 		System.out.println("     Livros Emprestados Por Usuário       ");
 		System.out.println("------------------------------------------");

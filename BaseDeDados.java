@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
-import package1
-import package2
+import packege1.Livro;
+import packege2.Usuario;
 
 public class BaseDeDados {
 	//por ser static , sem new, é carregada quando a classe é carregada

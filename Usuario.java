@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-class Usuario {
+public class Usuario {
 	static int proximoCodigo;
 	private String nome;
 	

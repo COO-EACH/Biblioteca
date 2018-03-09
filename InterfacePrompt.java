@@ -1,3 +1,6 @@
+//Escrever e ler na tela � Interfa�a de Prompt
+//Regra de negocio, fik tudo que n ta aki
+
 import java.util.Scanner;
 
 class InterfacePrompt {
@@ -148,6 +151,7 @@ class InterfacePrompt {
 	}
 
 	static void cadastraLivro() {
+		//leLivro - le dados do livro
 		Livro livro = leLivro();
 		if (RegrasNegocio.cadastraLivro(livro)) {
 			mostraMensagem("Livro cadastrado com sucesso!");
@@ -192,6 +196,7 @@ class InterfacePrompt {
 		System.out.println("     Usuários Cadastrados     ");
 		System.out.print("-------------------------------");
 		
+		// kindObjeto - name - 
 		for (Usuario usuario : RegrasNegocio.listaUsuarios()) {
 			System.out.println();
 			mostraUsuario(usuario);

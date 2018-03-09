@@ -1,10 +1,13 @@
 import java.util.ArrayList;
 
 class BaseDeDados {
+	//por ser static , sem new, é carregada quando a classe é carregada
+	
 	static ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 	static ArrayList<Livro> livros = new ArrayList<Livro>();
 
 	static boolean cadastraUsuario(Usuario usuario) {
+		//add na lista
 		usuarios.add(usuario);
 		return true;
 	}
@@ -55,12 +58,13 @@ class BaseDeDados {
 	}
 
 	static Livro buscaLivro(int codigoLivro) {
+		//for each - faz um for para objetos, só preciso passa o tipo e o nome e : nome no plural
 		for (Livro livro : livros) {
 			if (livro.codigo == codigoLivro) {
 				return livro;
 			}
 		}
-		
+		//n existe o livro
 		return null;
 	}
 

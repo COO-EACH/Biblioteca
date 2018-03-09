@@ -1,3 +1,5 @@
+//Excessões, tratamento de erros
+
 import java.util.ArrayList;
 
 

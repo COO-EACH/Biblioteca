@@ -1,26 +1,29 @@
 import java.util.ArrayList;
 
-class BaseDeDados {
+import package1
+import package2
+
+public class BaseDeDados {
 	//por ser static , sem new, é carregada quando a classe é carregada
 	
-	static ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
-	static ArrayList<Livro> livros = new ArrayList<Livro>();
+	private ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+	private ArrayList<Livro> livros = new ArrayList<Livro>();
 
-	static boolean cadastraUsuario(Usuario usuario) {
+	public boolean cadastraUsuario(Usuario usuario) {
 		//add na lista
 		usuarios.add(usuario);
 		return true;
 	}
 
-	static ArrayList<Livro> listaLivros() {
+	public ArrayList<Livro> listaLivros() {
 		return livros;
 	}
 
-	static ArrayList<Usuario> listaUsuarios() {
+	public ArrayList<Usuario> listaUsuarios() {
 		return usuarios;
 	}
 
-	static boolean devolveLivro(int codigoUsuario, int codigoLivro) {
+	public boolean devolveLivro(int codigoUsuario, int codigoLivro) {
 		Usuario usuario = buscaUsuario(codigoUsuario);
 		Livro livro = buscaLivro(codigoLivro);
 
@@ -34,7 +37,7 @@ class BaseDeDados {
 		return true;
 	}
 
-	static boolean emprestaLivro(int codigoUsuario, int codigoLivro) {
+	public boolean emprestaLivro(int codigoUsuario, int codigoLivro) {
 		Usuario usuario = buscaUsuario(codigoUsuario);
 		Livro livro = buscaLivro(codigoLivro);
 
@@ -52,12 +55,12 @@ class BaseDeDados {
 		return true;
 	}
 
-	static boolean cadastraLivro(Livro livro) {
+	public boolean cadastraLivro(Livro livro) {
 		livros.add(livro);
 		return true;
 	}
 
-	static Livro buscaLivro(int codigoLivro) {
+	public Livro buscaLivro(int codigoLivro) {
 		//for each - faz um for para objetos, só preciso passa o tipo e o nome e : nome no plural
 		for (Livro livro : livros) {
 			if (livro.codigo == codigoLivro) {
@@ -68,7 +71,7 @@ class BaseDeDados {
 		return null;
 	}
 
-	static Usuario buscaUsuario(int codigoUsuario) {
+	public Usuario buscaUsuario(int codigoUsuario) {
 		for (Usuario usuario : usuarios) {
 			if (usuario.codigo == codigoUsuario) {
 				return usuario;

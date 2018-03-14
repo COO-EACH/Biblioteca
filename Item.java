@@ -1,16 +1,39 @@
 public class Item extends Object {
 	private int codigo;
 	private String titulo;
-	
-	//construtor
+	private String ano; //string de 4 digitos
+
+	//construtor vazio
 	public Item() {
 		super();
 	}
 	
-	public Item(int codigo, String titulo) {
+	//construtor cheio
+	public Item(int codigo, String titulo, String ano) {
 		super(); // invocar construtor da super classe = extendes objet
-		this.codigo = codigo;
-		this.titulo = titulo;	
+		setCodigo(codigo);
+		setTitulo(titulo);
+		setAno(ano);
+	}
+	
+	public int getAno() {
+		return ano;
+	}
+
+	public void setAno(int ano) {
+		if(ano!=null  && ano.length()!= 4) {
+			this.ano = ano;
+		}
+		else {
+			for(int i = 0; i < 4; i++) {
+				if(Character.isDigit(ano.charAt(i)){
+					//tratamento de exessao
+					throw new IllegalArgumentException("Ano inválido");
+				}
+			}
+			
+		}
+		
 	}
 	
 	public int getCodigo() {

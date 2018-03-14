@@ -12,31 +12,44 @@ public class Livro extends Item {
 	private int qtdExemplaresEmprestados;
 	private Genero genero;
 	private int numPaginas;
-	private String Sinopse;
+	private String sinopse; // precisa ser com letra minuscula
 	private int edicao;
 	private String editora;
+	
+	public Livro( int codigo, String ano, String titulo, ArrayList<String> autores, int qtdExemplaresDisponiveis, int qtdExemplaresEmprestados,
+			Genero genero, int numPaginas, String sinopse, int edicao, String editora) {
+		super( codigo, titulo, ano);
+		
+		//get set
+		this.titulo = titulo;
+		this.autores = autores;
+		this.qtdExemplaresDisponiveis = qtdExemplaresDisponiveis;
+		this.qtdExemplaresEmprestados = qtdExemplaresEmprestados;
+		this.genero = genero;
+		this.numPaginas = numPaginas;
+		this.sinopse = sinopse;
+		this.edicao = edicao;
+		this.editora = editora;
+	}
+
 		
 	public Livro() {
 		super(); // insere automatico como se eu n tivesse
 	}
 
-	//construtor
-//	public Livro(String titulo, String autores, int qtdExemplaresDisponiveis,
-//			int codigo, ) {
-//		super(codigo, titulo);
-//		this.titulo = titulo;
-//		this.autores = autores;
-//		this.qtdExemplaresDisponiveis = qtdExemplaresDisponiveis;
-//		this.codigo = codigo;
-//	}
+	public String getTitulo() {
+		return titulo;
+	}
 
-	//get e set titulos vem do Item extends
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
 
-	public String getAutores() {
+	public ArrayList<String> getAutores() {
 		return autores;
 	}
 
-	public void setAutores(String autores) {
+	public void setAutores(ArrayList<String> autores) {
 		this.autores = autores;
 	}
 
@@ -56,21 +69,43 @@ public class Livro extends Item {
 		this.qtdExemplaresEmprestados = qtdExemplaresEmprestados;
 	}
 
-	public int getCodigo() {
-		return codigo;
+	public Genero getGenero() {
+		return genero;
 	}
 
-	public void setCodigo(int codigo) {
-		this.codigo = codigo;
+	public void setGenero(Genero genero) {
+		this.genero = genero;
 	}
-	
-	public void emprestaExemplar() {
-		qtdExemplaresDisponiveis--;
-		qtdExemplaresEmprestados++;
+
+	public int getNumPaginas() {
+		return numPaginas;
 	}
-	
-	public void devolveExemplar() {
-		qtdExemplaresDisponiveis++;
-		qtdExemplaresEmprestados--;
+
+	public void setNumPaginas(int numPaginas) {
+		this.numPaginas = numPaginas;
+	}
+
+	public String getSinopse() {
+		return Sinopse;
+	}
+
+	public void setSinopse(String sinopse) {
+		Sinopse = sinopse;
+	}
+
+	public int getEdicao() {
+		return edicao;
+	}
+
+	public void setEdicao(int edicao) {
+		this.edicao = edicao;
+	}
+
+	public String getEditora() {
+		return editora;
+	}
+
+	public void setEditora(String editora) {
+		this.editora = editora;
 	}
 }

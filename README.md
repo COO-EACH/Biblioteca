@@ -1,4 +1,17 @@
 # Biblioteca
-Colocar public ou private
-Cap 5 apostila da Caellum
-Cap 6 sobre eclipse
+TASK 14/03/2018
+
+Adicionar novos objetos:
+
+Livro{
+autor
+edicao
+genero
+editora
+}
+
+CD{
+}
+
+DVD{
+}

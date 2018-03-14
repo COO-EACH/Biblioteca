@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 
+import dto.Livro;
+import dto.Usuario;
+
 public class RegrasNegocio {
 	public static final int MAX_EMPRESTIMOS_POR_USUARIO = 2;
 

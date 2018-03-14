@@ -4,24 +4,29 @@ package dto; // data transfer object
 import java.util.*;
 
 public class Livro extends Item {
+//	enum é como se genero só pudesse ser esse listados, eu crio um timpo que so aceita o que esta na chaves
 	public enum Genero {Drama, FiccaoCientifica, Fantasia, Policial, Misterio}
 	
-	private String titulo;
 	private ArrayList<String> autores;
+	// array list tem as funções de add remove e equals, como se fosse push pop
+	// add adiciona e remuve remove - por indice, objeto - equals comparaa -
+	
 	private int qtdExemplaresDisponiveis;
 	private int qtdExemplaresEmprestados;
 	private Genero genero;
 	private int numPaginas;
 	private String sinopse; // precisa ser com letra minuscula
+
+
 	private int edicao;
 	private String editora;
 	
 	public Livro( int codigo, String ano, String titulo, ArrayList<String> autores, int qtdExemplaresDisponiveis, int qtdExemplaresEmprestados,
 			Genero genero, int numPaginas, String sinopse, int edicao, String editora) {
-		super( codigo, titulo, ano);
-		
+		//super( codigo, titulo, ano);
+		super();
 		//get set
-		this.titulo = titulo;
+//		this.titulo = titulo;  colocar no super,  é privado
 		this.autores = autores;
 		this.qtdExemplaresDisponiveis = qtdExemplaresDisponiveis;
 		this.qtdExemplaresEmprestados = qtdExemplaresEmprestados;
@@ -36,13 +41,14 @@ public class Livro extends Item {
 	public Livro() {
 		super(); // insere automatico como se eu n tivesse
 	}
-
-	public String getTitulo() {
-		return titulo;
+	
+	public String getSinopse() {
+		return sinopse;
 	}
 
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
+
+	public void setSinopse(String sinopse) {
+		this.sinopse = sinopse;
 	}
 
 	public ArrayList<String> getAutores() {
@@ -83,14 +89,6 @@ public class Livro extends Item {
 
 	public void setNumPaginas(int numPaginas) {
 		this.numPaginas = numPaginas;
-	}
-
-	public String getSinopse() {
-		return Sinopse;
-	}
-
-	public void setSinopse(String sinopse) {
-		Sinopse = sinopse;
 	}
 
 	public int getEdicao() {

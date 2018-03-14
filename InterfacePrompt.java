@@ -1,5 +1,8 @@
 import java.util.Scanner;
 
+import dto.Livro;
+import dto.Usuario;
+
 public class InterfacePrompt {
 	private Scanner in = new Scanner(System.in);
 	private RegrasNegocio regrasNegocio = new RegrasNegocio();

@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 
+import dto.Livro;
+import dto.Usuario;
+
 public class BaseDeDados {
 	private ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 	private ArrayList<Livro> livros = new ArrayList<Livro>();

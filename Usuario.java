@@ -1,9 +1,18 @@
 import java.util.ArrayList;
 
 public class Usuario {
-	static int proximoCodigo;
 	private String nome;
-	
+	private int codigo;
+	private ArrayList<Livro> livrosEmprestados = new ArrayList<Livro>();
+
+	public Usuario() {
+	}
+
+	public Usuario(String nome, int codigo) {
+		this.nome = nome;
+		this.codigo = codigo;
+	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -12,16 +21,19 @@ public class Usuario {
 		this.nome = nome;
 	}
 
-	private int codigo;
-	
 	public int getCodigo() {
 		return codigo;
 	}
 
-	//quando der new no user:
-	private ArrayList<Livro> livrosEmprestados = new ArrayList<Livro>();
-	
-	public Usuario() {
-		codigo = proximoCodigo++;
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
+	}
+
+	public ArrayList<Livro> getLivrosEmprestados() {
+		return livrosEmprestados;
+	}
+
+	public void setLivrosEmprestados(ArrayList<Livro> livrosEmprestados) {
+		this.livrosEmprestados = livrosEmprestados;
 	}
 }

@@ -1,12 +1,10 @@
-//Escrever e ler na tela � Interfa�a de Prompt
-//Regra de negocio, fik tudo que n ta aki
-
 import java.util.Scanner;
 
 public class InterfacePrompt {
-	static Scanner in = new Scanner(System.in);
+	private Scanner in = new Scanner(System.in);
+	private RegrasNegocio regrasNegocio = new RegrasNegocio();
 
-	public static void mostraTela() {
+	public void mostraTela() {
 		while (true) {
 			mostraMenu();
 
@@ -55,22 +53,22 @@ public class InterfacePrompt {
 		}
 	}
 
-	public static void mostraMensagem(String mensagem) {
+	private void mostraMensagem(String mensagem) {
 		System.out.println(mensagem);
 	}
 
-	public static int leComando() {
+	private int leComando() {
 		return Integer.parseInt(in.nextLine());
 	}
 
-	public static void encerra() {
+	private void encerra() {
 		mostraMensagem("Obrigado por utilizar nosso sistema :)");
 		mostraMensagem("Tchau!");
 		in.close();
 		System.exit(0);
 	}
 
-	public static void mostraMenu() {
+	private void mostraMenu() {
 		mostraMensagem("Digite uma das opções abaixo:");
 		mostraMensagem("1 - Para cadastrar um novo usuário");
 		mostraMensagem("2 - Para cadastrar um novo livro");
@@ -83,158 +81,149 @@ public class InterfacePrompt {
 		mostraMensagem("8 - Para encerrar");
 	}
 
-	public static void mostraLivro(Livro livro) {
-		mostraMensagem("Título: " + livro.titulo);
-		mostraMensagem("Autor(es): " + livro.autores);
+	private void mostraLivro(Livro livro) {
+		mostraMensagem("Título: " + livro.getTitulo());
+		mostraMensagem("Autor(es): " + livro.getAutores());
 		mostraMensagem("Exemplares disponíveis: "
-				+ livro.qtdExemplaresDisponiveis);
+				+ livro.getQtdExemplaresDisponiveis());
 		mostraMensagem("Exemplares emprestados: "
-				+ livro.qtdExemplaresEmprestados);
-		mostraMensagem("Código: " + livro.codigo);
+				+ livro.getQtdExemplaresEmprestados());
+		mostraMensagem("Código: " + livro.getCodigo());
 	}
 
-	public static void mostraUsuario(Usuario usuario) {
-		mostraMensagem("Nome: " + usuario.nome);
-		mostraMensagem("Código: " + usuario.codigo);
+	private void mostraUsuario(Usuario usuario) {
+		mostraMensagem("Nome: " + usuario.getNome());
+		mostraMensagem("Código: " + usuario.getCodigo());
 	}
 
-	public static String leCampoString(String nomeCampo) {
+	private String leCampoString(String nomeCampo) {
 		mostraMensagem(nomeCampo + ": ");
 		String textoDigitado = in.nextLine();
 		return textoDigitado;
 	}
 
-	public static int leCampoInt(String nomeCampo) {
+	private int leCampoInt(String nomeCampo) {
 		mostraMensagem(nomeCampo + ": ");
 		String textoDigitado = in.nextLine();
 		return Integer.parseInt(textoDigitado);
 	}
 
-	public static String leNome() {
+	private String leNome() {
 		return leCampoString("Nome");
 	}
 
-	public static int leCodigoLivro() {
+	private int leCodigoLivro() {
 		return leCampoInt("Código livro");
 	}
 
-	public static int leCodigoUsuario() {
+	private int leCodigoUsuario() {
 		return leCampoInt("Código usuário");
 	}
 
-	public static int leQtdExemplares() {
+	private int leQtdExemplares() {
 		return leCampoInt("Quantidade de exemplares");
 	}
 
-	public static String leAutores() {
+	private String leAutores() {
 		return leCampoString("Autores");
 	}
 
-	public static String leTitulo() {
+	private String leTitulo() {
 		return leCampoString("Título");
 	}
 
-	public static Livro leLivro() {
-		Livro livro = new Livro();
-		livro.titulo = leTitulo();
-		livro.autores = leAutores();
-		livro.qtdExemplaresDisponiveis = leQtdExemplares();
-		livro.codigo = leCodigoLivro();
-		return livro;
+	private Livro leLivro() {
+		return new Livro(leTitulo(), leAutores(), leQtdExemplares(),
+				leCodigoLivro());
 	}
 
-	public static Usuario leUsuario() {
-		Usuario usuario = new Usuario();
-		usuario.nome = leNome();
-		usuario.codigo = leCodigoUsuario();
-		return usuario;
+	private Usuario leUsuario() {
+		return new Usuario(leNome(), leCodigoUsuario());
 	}
 
-	public static void cadastraLivro() {
-		//leLivro - le dados do livro
+	private void cadastraLivro() {
 		Livro livro = leLivro();
-		if (RegrasNegocio.cadastraLivro(livro)) {
+		if (regrasNegocio.cadastraLivro(livro)) {
 			mostraMensagem("Livro cadastrado com sucesso!");
 		} else {
 			mostraMensagem("Livro não pode ser cadastrado!");
 		}
 	}
 
-	public static void cadastraUsuario() {
+	private void cadastraUsuario() {
 		Usuario usuario = leUsuario();
-		if (RegrasNegocio.cadastraUsuario(usuario)) {
+		if (regrasNegocio.cadastraUsuario(usuario)) {
 			mostraMensagem("Usuário cadastrado com sucesso!");
 		} else {
 			mostraMensagem("usuário não pode ser cadastrado!");
 		}
 	}
 
-	public static void realizaDevolucao() {
+	private void realizaDevolucao() {
 		int codigoUsuario = leCodigoUsuario();
 		int codigoLivro = leCodigoLivro();
 
-		if (RegrasNegocio.devolveLivro(codigoUsuario, codigoLivro)) {
+		if (regrasNegocio.devolveLivro(codigoUsuario, codigoLivro)) {
 			mostraMensagem("Livro devolvido com sucesso!");
 		} else {
 			mostraMensagem("Livro não pode ser devolvido!");
 		}
 	}
 
-	public static void realizaEmprestimo() {
+	private void realizaEmprestimo() {
 		int codigoUsuario = leCodigoUsuario();
 		int codigoLivro = leCodigoLivro();
 
-		if (RegrasNegocio.emprestaLivro(codigoUsuario, codigoLivro)) {
+		if (regrasNegocio.emprestaLivro(codigoUsuario, codigoLivro)) {
 			mostraMensagem("Empréstimo realizado com sucesso!");
 		} else {
 			mostraMensagem("Empréstimo não pode ser realizado!");
 		}
 	}
 
-	public static void listaUsuarios() {
+	private void listaUsuarios() {
 		System.out.println("-------------------------------");
 		System.out.println("     Usuários Cadastrados     ");
 		System.out.print("-------------------------------");
-		
-		// kindObjeto - name - 
-		for (Usuario usuario : RegrasNegocio.listaUsuarios()) {
+
+		for (Usuario usuario : regrasNegocio.listaUsuarios()) {
 			System.out.println();
 			mostraUsuario(usuario);
 		}
-		
+
 		System.out.println("-------------------------------");
 		System.out.println();
 	}
 
-	public static void listaLivros() {
+	private void listaLivros() {
 		System.out.println("-------------------------------");
 		System.out.println("      Livros Cadastrados       ");
 		System.out.print("-------------------------------");
-		
-		for (Livro livro : RegrasNegocio.listaLivros()) {
+
+		for (Livro livro : regrasNegocio.listaLivros()) {
 			System.out.println();
 			mostraLivro(livro);
 		}
-		
+
 		System.out.println("-------------------------------");
 		System.out.println();
 	}
 
-	public static void listaLivrosEmprestadosPorCadaUsuario() {
+	private void listaLivrosEmprestadosPorCadaUsuario() {
 		System.out.println("------------------------------------------");
 		System.out.println("     Livros Emprestados Por Usuário       ");
 		System.out.println("------------------------------------------");
 
-		for (Usuario usuario : RegrasNegocio.listaUsuarios()) {
+		for (Usuario usuario : regrasNegocio.listaUsuarios()) {
 			System.out.println("------------------------------");
 			mostraUsuario(usuario);
 			System.out.println();
 
-			for (Livro livro : usuario.livrosEmprestados) {
+			for (Livro livro : usuario.getLivrosEmprestados()) {
 				mostraLivro(livro);
 				System.out.println();
 			}
-			
+
 			System.out.println("------------------------------");
 		}
 	}

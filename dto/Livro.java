@@ -42,6 +42,8 @@ public class Livro extends Item {
 		super(); // insere automatico como se eu n tivesse
 	}
 	
+	//******************GETTERS & SETTER
+	
 	public String getSinopse() {
 		return sinopse;
 	}
@@ -105,5 +107,16 @@ public class Livro extends Item {
 
 	public void setEditora(String editora) {
 		this.editora = editora;
+	}
+	
+	//******************FUNÇÕES
+	public void devolveExemplar() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void emprestaExemplar() {
+		// TODO Auto-generated method stub
+		
 	}
 }

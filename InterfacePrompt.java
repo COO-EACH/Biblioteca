@@ -136,8 +136,7 @@ public class InterfacePrompt {
 	}
 
 	private Livro leLivro() {
-		return new Livro(leTitulo(), leAutores(), leQtdExemplares(),
-				leCodigoLivro());
+		return new Livro(0, leTitulo(), leAutores(), null, leQtdExemplares(),leCodigoLivro(), null, 0, null, 0, null);
 	}
 
 	private Usuario leUsuario() {

@@ -4,22 +4,23 @@ package dto; // data transfer object
 import java.util.*;
 
 public class Livro extends Item {
-//	enum é como se genero só pudesse ser esse listados, eu crio um timpo que so aceita o que esta na chaves
-	public enum Genero {Drama, FiccaoCientifica, Fantasia, Policial, Misterio}
 	
+	//******************DECLARACAO DE VARS
+	
+    //	enum é como se genero só pudesse ser esse listados, eu crio um timpo que so aceita o que esta na chaves
+	public enum Genero {Drama, FiccaoCientifica, Fantasia, Policial, Misterio}
 	private ArrayList<String> autores;
 	// array list tem as funções de add remove e equals, como se fosse push pop
 	// add adiciona e remuve remove - por indice, objeto - equals comparaa -
-	
 	private int qtdExemplaresDisponiveis;
 	private int qtdExemplaresEmprestados;
 	private Genero genero;
 	private int numPaginas;
 	private String sinopse; // precisa ser com letra minuscula
-
-
 	private int edicao;
 	private String editora;
+	
+	//******************CONSTRUCTOR
 	
 	public Livro( int codigo, String ano, String titulo, ArrayList<String> autores, int qtdExemplaresDisponiveis, int qtdExemplaresEmprestados,
 			Genero genero, int numPaginas, String sinopse, int edicao, String editora) {
@@ -36,7 +37,6 @@ public class Livro extends Item {
 		this.edicao = edicao;
 		this.editora = editora;
 	}
-
 		
 	public Livro() {
 		super(); // insere automatico como se eu n tivesse
@@ -111,12 +111,12 @@ public class Livro extends Item {
 	
 	//******************FUNÇÕES
 	public void devolveExemplar() {
-		// TODO Auto-generated method stub
-		
+		qtdExemplaresDisponiveis++;
+		qtdExemplaresEmprestados--;
 	}
 
 	public void emprestaExemplar() {
-		// TODO Auto-generated method stub
-		
+		qtdExemplaresDisponiveis--;
+		qtdExemplaresEmprestados++;
 	}
 }

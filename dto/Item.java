@@ -6,6 +6,7 @@ public class Item extends Object{
 	private int codigo;
 	private String titulo;
 	private String ano; // string de 4 digitos
+	private String sinopse;
 
 	// construtor vazio
 	public Item() {

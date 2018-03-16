@@ -1,10 +1,14 @@
 package dto;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.LinkedList;
 
 public class Usuario {
 	private String nome;
 	private int codigo;
-	private ArrayList<Livro> livrosEmprestados = new ArrayList<Livro>();
+	private List<Livro> livrosEmprestados = new LinkedList<Livro>();
+//	LinkedList<> // maior que o List
+//	List<> // é uma interface
 
 	public Usuario() {
 	}

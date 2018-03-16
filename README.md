@@ -1,17 +1,5 @@
 # Biblioteca
-TASK 14/03/2018
+TASK 16/03/18
 
-Adicionar novos objetos:
-
-Livro{
-autor
-edicao
-genero
-editora
-}
-
-CD{
-}
-
-DVD{
-}
+Ele que que mantem o historico de emprestimo
+Falo de Interface, Abstratos, 
